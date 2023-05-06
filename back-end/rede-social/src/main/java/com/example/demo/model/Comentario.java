@@ -2,6 +2,8 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,13 +18,14 @@ public class Comentario {
   private UUID id = UUID.randomUUID();
 
   private String texto;
-  private LocalDateTime dataCriaco;
+  private String nome;
+  private LocalDateTime dataCriacao;
 
   @JsonSerialize(using = ToStringSerializer.class)
   private UUID idUsuario;
 
-  @JsonSerialize(using = ToStringSerializer.class)
-  private UUID idPost;
+  private List<Like> likes = new ArrayList<Like>();
+  
 
   public UUID getId() {
     return id;
@@ -40,12 +43,12 @@ public class Comentario {
     this.texto = texto;
   }
 
-  public LocalDateTime getDataCriaco() {
-    return dataCriaco;
+  public LocalDateTime getDataCriacao() {
+    return dataCriacao;
   }
 
-  public void setDataCriaco(LocalDateTime dataCriaco) {
-    this.dataCriaco = dataCriaco;
+  public void setDataCriacao(LocalDateTime dataCriacao) {
+    this.dataCriacao = dataCriacao;
   }
 
   public UUID getIdUsuario() {
@@ -56,12 +59,21 @@ public class Comentario {
     this.idUsuario = idUsuario;
   }
 
-  public UUID getIdPost() {
-    return idPost;
+  public String getNome() {
+    return nome;
   }
 
-  public void setIdPost(UUID idPost) {
-    this.idPost = idPost;
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  public List<Like> getLikes() {
+    return likes;
+  }
+
+  public void setLikes(List<Like> likes) {
+    this.likes = likes;
   }
   
+ 
 }

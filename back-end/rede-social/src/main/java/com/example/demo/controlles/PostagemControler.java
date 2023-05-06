@@ -42,5 +42,10 @@ public class PostagemControler {
   public void deletaPostagem(@PathVariable UUID id){
     postagemServer.excluirPostagem(id);
   }
+
+  @GetMapping("/count")
+  public long countPostag(){
+    return postagemServer.countPostagem();
+  }
 }
 

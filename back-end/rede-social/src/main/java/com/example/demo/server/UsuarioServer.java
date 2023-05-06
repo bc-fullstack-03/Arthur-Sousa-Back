@@ -18,6 +18,8 @@ public class UsuarioServer {
   @Autowired
   UsuarioRepository usuarioRepository;
 
+
+
   public ResponseEntity<Usuario> criar(Usuario usuario) {
     Usuario novoUsuario = usuarioRepository.save(usuario);
     return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
@@ -40,21 +42,22 @@ public class UsuarioServer {
     usuarioRepository.deleteById(id);
   }
 
-
   public ResponseEntity<Usuario> atualizarUsuario(UUID id, Usuario usuario) {
     Optional<Usuario> optionalUsuario = usuarioRepository.findById(id);
     if (optionalUsuario.isPresent()) {
-        Usuario usuarioExistente = optionalUsuario.get();
-        usuarioExistente.setNome(usuario.getNome());
-        usuarioExistente.setEmail(usuario.getEmail());
-        // Adicione outros campos que deseja atualizar
-        
-        Usuario usuarioAtualizado = usuarioRepository.save(usuarioExistente);
-        return ResponseEntity.ok().body(usuarioAtualizado);
-    } else {
-        return ResponseEntity.notFound().build();
-    }
-}
+      Usuario usuarioExistente = optionalUsuario.get();
+      usuarioExistente.setNome(usuario.getNome());
+      usuarioExistente.setEmail(usuario.getEmail());
+      // Adicione outros campos que deseja atualizar
 
+      Usuario usuarioAtualizado = usuarioRepository.save(usuarioExistente);
+      return ResponseEntity.ok().body(usuarioAtualizado);
+    } else {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+
+ 
 
 }

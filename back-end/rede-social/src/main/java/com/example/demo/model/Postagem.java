@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,8 +20,13 @@ public class Postagem {
 
   @JsonSerialize(using = ToStringSerializer.class)
   private UUID usuarioId;
-
   private LocalDateTime dataDaPublicacao;
+
+  private List<Comentario> comentarios = new ArrayList<Comentario>();
+  private List<Like> likes = new ArrayList<Like>();
+
+ 
+
 
   public String getTitulo() {
     return titulo;
@@ -60,5 +67,21 @@ public class Postagem {
   public void setUsuarioId(UUID usuarioId) {
     this.usuarioId = usuarioId;
   }
+  public List<Comentario> getComentarios() {
+    return comentarios;
+  }
 
+  public void setComentarios(List<Comentario> comentarios) {
+    this.comentarios = comentarios;
+  }
+
+  public List<Like> getLikes() {
+    return likes;
+  }
+
+  public void setLikes(List<Like> likes) {
+    this.likes = likes;
+  }
+
+  
 }
