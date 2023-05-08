@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.JwtUtil;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.UsuarioRepository;
 
@@ -18,7 +19,8 @@ public class UsuarioServer {
   @Autowired
   UsuarioRepository usuarioRepository;
 
-
+  @Autowired
+  private JwtUtil jwtUtil;
 
   public ResponseEntity<Usuario> criar(Usuario usuario) {
     Usuario novoUsuario = usuarioRepository.save(usuario);
@@ -59,5 +61,33 @@ public class UsuarioServer {
 
 
  
+  public String autenticar(String email, String senha) throws Exception{
+    Usuario user = usuarioRepository.findByEmail(email);
+
+    if (user == null) {
+        throw new Exception("Usuário não encontrado");
+    }
+
+    if (!user.getSenha().equals(senha)) {
+        throw new Exception("Senha incorreta");
+    }
+
+    String token = jwtUtil.gerarToken(user.getId());
+    return token;
+
+  }
+
+  public Usuario getUserFromToken(String token) throws Exception {
+    if (!jwtUtil.validarToken(token)) {
+        throw new Exception("Invalid token");
+    }
+    String email = jwtUtil.getEmailFromToken(token);
+    Usuario user = usuarioRepository.findByEmail(email);
+    return user;
+}
+
+
+
+
 
 }

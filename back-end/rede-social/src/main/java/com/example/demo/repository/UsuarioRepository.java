@@ -9,4 +9,8 @@ import com.example.demo.model.Usuario;
 
 @Repository
 public interface UsuarioRepository extends MongoRepository<Usuario, UUID> {
+  Usuario findByEmailAndSenha(String email, String senha);
+  Usuario findByEmail(String email);
+ 
+
 }
