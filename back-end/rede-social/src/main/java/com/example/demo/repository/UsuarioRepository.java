@@ -11,6 +11,6 @@ import com.example.demo.model.Usuario;
 public interface UsuarioRepository extends MongoRepository<Usuario, UUID> {
   Usuario findByEmailAndSenha(String email, String senha);
   Usuario findByEmail(String email);
- 
+  Usuario findUserById(UUID id);
 
 }

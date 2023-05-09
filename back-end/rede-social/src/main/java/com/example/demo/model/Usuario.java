@@ -12,20 +12,16 @@ public class Usuario {
   private String nome;
   private String email;
   private String senha;
+  private String imageUrl;
 
-  
 
-  public Usuario() {
-  }
+ 
 
-  
-
-  public Usuario(String email, String senha) {
+  public Usuario(String nome, String email, String senha) {
+    this.nome = nome;
     this.email = email;
     this.senha = senha;
   }
-
-
 
   public String getNome() {
     return nome;
@@ -58,5 +54,15 @@ public class Usuario {
   public void setId(UUID id) {
     this.id = id;
   }
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
+
+
 
 }

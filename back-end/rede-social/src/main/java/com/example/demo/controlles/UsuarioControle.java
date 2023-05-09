@@ -1,10 +1,12 @@
 package com.example.demo.controlles;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.model.Usuario;
 import com.example.demo.server.AdicionarAmigoServer;
@@ -33,11 +36,13 @@ public class UsuarioControle {
   @Autowired
   private AdicionarAmigoServer adicionarAmigoServer;
 
-  
-
   @PostMapping("/criar")
   public ResponseEntity<Usuario> criar(@RequestBody Usuario usuario) {
-    return usuarioServer.criar(usuario);
+    try {
+      return usuarioServer.criar(usuario);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
   }
 
   @GetMapping("/usuarios")
@@ -89,7 +94,7 @@ public class UsuarioControle {
   @GetMapping("/validarToken")
   public ResponseEntity<Usuario> getUsuarioFromToken(@RequestHeader("Authorization") String authorizationHeader) {
 
-    if(authorizationHeader == null || authorizationHeader.length() <= 7) {
+    if (authorizationHeader == null || authorizationHeader.length() <= 7) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
     String token = authorizationHeader.substring(7); // Remove a palavra "Bearer" do header
@@ -100,5 +105,25 @@ public class UsuarioControle {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
   }
+
+  @PostMapping("/{userId}/imagem")
+  public ResponseEntity<?> uploadImage(@PathVariable UUID userId, @RequestParam("imagem") MultipartFile imagem) {
+    try {
+      usuarioServer.uploadImage(userId, imagem);
+      return ResponseEntity.ok().build();
+    } catch (IOException e) {
+      return ResponseEntity.notFound().build();
+
+    }
+  }
+
+  @GetMapping("/api/files/{id}")
+
+  public ResponseEntity<byte[]> getFileById(@PathVariable String id) throws Exception {
+    byte[] resource = usuarioServer.getFileAsJpg(id);
+    return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+
+}
+
 
 }
